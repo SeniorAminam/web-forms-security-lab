@@ -10,6 +10,17 @@
  * XSS Security Demo - Demonstrates Cross-Site Scripting vulnerabilities and prevention
  * Developed by Amin Davodian
  */
+
+// Simple stateless XSS demo logic - Developed by Amin Davodian
+ $msg_bad  = ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['msg_bad']))
+    ? $_POST['msg_bad']
+    : null;
+ $msg_good = ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['msg_good']))
+    ? $_POST['msg_good']
+    : null;
+
+ $show_bad  = $msg_bad !== null && $msg_bad !== '';
+ $show_good = $msg_good !== null && $msg_good !== '';
 ?>
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
@@ -35,23 +46,23 @@
                     <span class="examples-title">👇 نمونه‌های قابل کلیک:</span>
                     <button class="example-btn safe" onclick="fillBad('سلام دنیا!')">متن ساده</button>
                     <button class="example-btn attack" onclick="fillBad('<script>alert(1)</script>')">اسکریپت Alert</button>
-                    <button class="example-btn attack" onclick="fillBad('<img src=x onerror=alert(1)>')">تصویر مخرب</button>
+                    <button class="example-btn attack" onclick="fillBad('<img src=x onerror=alert(1) alt=malicious>')">تصویر مخرب</button>
                 </div>
 
                 <form action="" method="POST" id="badForm">
                     <div class="form-group">
-                        <label>پیام شما:</label>
+                        <label for="inputBad">پیام شما:</label>
                         <input type="text" name="msg_bad" id="inputBad" placeholder="<script>alert('Hacked!')</script>">
                     </div>
-                    <button type="submit" style="background-color: var(--error-color);">ارسال خطرناک</button>
+                    <button type="submit" class="btn-submit-bad">ارسال خطرناک</button>
                 </form>
 
-                <?php if (isset($_POST['msg_bad'])): ?>
+                <?php if ($show_bad && $msg_bad): ?>
                     <div class="alert alert-error" style="margin-top: 1rem;">
                         <strong>نتیجه (بدون فیلتر):</strong><br>
                         <?php 
                         // VULNERABLE - For demonstration only! Never do this in production!
-                        echo $_POST['msg_bad']; 
+                        echo $msg_bad; 
                         ?>
                     </div>
                 <?php endif; ?>
@@ -70,16 +81,16 @@
 
                 <form action="" method="POST" id="goodForm">
                     <div class="form-group">
-                        <label>پیام شما:</label>
+                        <label for="inputGood">پیام شما:</label>
                         <input type="text" name="msg_good" id="inputGood" placeholder="<script>alert('Safe')</script>">
                     </div>
-                    <button type="submit" style="background-color: var(--success-color);">ارسال امن</button>
+                    <button type="submit" class="btn-submit-good">ارسال امن</button>
                 </form>
 
-                <?php if (isset($_POST['msg_good'])): ?>
+                <?php if ($show_good && $msg_good): ?>
                     <div class="alert alert-success" style="margin-top: 1rem;">
                         <strong>نتیجه (ایمن شده):</strong><br>
-                        <?php echo htmlspecialchars($_POST['msg_good'], ENT_QUOTES, 'UTF-8'); ?>
+                        <?php echo htmlspecialchars($msg_good, ENT_QUOTES, 'UTF-8'); ?>
                     </div>
                     <pre>Code: htmlspecialchars($input);</pre>
                 <?php endif; ?>
@@ -91,22 +102,30 @@
             const input = document.getElementById('inputBad');
             input.value = value;
             input.style.backgroundColor = '#fffbeb';
-            setTimeout(() => input.style.backgroundColor = '', 500);
-            
-            if(window.logger) {
+
+            if (window.logger) {
                 window.logger.log('Interaction', `Filled Vulnerable Input: ${value}`, 'warning');
             }
+
+            // Reset background after delay
+            setTimeout(() => {
+                input.style.backgroundColor = '';
+            }, 500);
         }
 
         function fillGood(value) {
             const input = document.getElementById('inputGood');
             input.value = value;
             input.style.backgroundColor = '#fffbeb';
-            setTimeout(() => input.style.backgroundColor = '', 500);
-            
-            if(window.logger) {
+
+            if (window.logger) {
                 window.logger.log('Interaction', `Filled Secure Input: ${value}`, 'success');
             }
+
+            // Reset background after delay
+            setTimeout(() => {
+                input.style.backgroundColor = '';
+            }, 500);
         }
     </script>
 </body>
