@@ -19,12 +19,23 @@ class ConsoleLogger {
 
     init() {
         this.displayWelcome();
-        this.initProjectorMode();
-        this.initVisualLogger();
-        this.setupFormLogging();
         this.setupAjaxLogging();
         this.setupErrorLogging();
-        this.logPageLoad();
+        
+        // Wait for DOM to be ready before initializing UI elements
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', () => {
+                this.initProjectorMode();
+                this.initVisualLogger();
+                this.setupFormLogging();
+                this.logPageLoad();
+            });
+        } else {
+            this.initProjectorMode();
+            this.initVisualLogger();
+            this.setupFormLogging();
+            this.logPageLoad();
+        }
     }
 
     // Initialize Projector Mode (High Contrast)
