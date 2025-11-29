@@ -40,7 +40,41 @@ class ConsoleLogger {
 
     // Initialize Projector Mode (High Contrast)
     initProjectorMode() {
-        // Create Toggle Button
+        // Create Console Toggle Button
+        const consoleBtn = document.createElement('div');
+        consoleBtn.id = 'console-toggle';
+        consoleBtn.innerHTML = '📟';
+        consoleBtn.title = 'Toggle Console Logger';
+        consoleBtn.style.cssText = `
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 10002;
+            background: var(--card-bg);
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            cursor: pointer;
+            box-shadow: 0 0 20px var(--primary-glow);
+            transition: all 0.3s;
+        `;
+        document.body.appendChild(consoleBtn);
+
+        // Toggle Console Logger
+        consoleBtn.addEventListener('click', () => {
+            const logger = document.getElementById('visual-logger');
+            if (logger) {
+                logger.classList.toggle('visible');
+            }
+        });
+
+        // Create Projector Toggle Button
         const btn = document.createElement('div');
         btn.id = 'projector-toggle';
         btn.innerHTML = '📽️';
@@ -73,7 +107,7 @@ class ConsoleLogger {
                     <span>📟</span> Live System Logs
                 </div>
                 <div class="vl-controls">
-                    <button class="vl-btn" onclick="event.stopPropagation(); logger.clearVisualLog()">Clear</button>
+                    <button class="vl-btn" onclick="event.stopPropagation(); logger.clearVisualLog(); sessionStorage.removeItem('consoleLogs');">Clear</button>
                     <button class="vl-btn" onclick="event.stopPropagation(); document.getElementById('visual-logger').classList.toggle('minimized')">_</button>
                 </div>
             </div>
@@ -82,10 +116,19 @@ class ConsoleLogger {
         document.body.appendChild(container);
         this.vlContent = document.getElementById('vl-content');
 
-        // Auto-show visual logger after a short delay
-        setTimeout(() => {
-            container.classList.add('visible');
-        }, 300);
+        // Restore logs from previous session
+        this.restoreLogs();
+
+        // Add click handler to header to show/hide logger
+        const header = container.querySelector('.vl-header');
+        if (header) {
+            header.addEventListener('click', (e) => {
+                if (e.target.closest('.vl-btn')) return; // Don't toggle if clicking buttons
+                container.classList.toggle('visible');
+            });
+        }
+
+        // Don't auto-show - user must click to open
     }
 
     // Append to Visual Logger
@@ -120,6 +163,26 @@ class ConsoleLogger {
         entry.innerHTML = html;
         this.vlContent.appendChild(entry);
         this.vlContent.scrollTop = this.vlContent.scrollHeight;
+
+        // Save to sessionStorage for persistence across page reloads
+        this.saveLogs();
+    }
+
+    // Save logs to sessionStorage
+    saveLogs() {
+        if (!this.vlContent) return;
+        const logsHTML = this.vlContent.innerHTML;
+        sessionStorage.setItem('consoleLogs', logsHTML);
+    }
+
+    // Restore logs from sessionStorage
+    restoreLogs() {
+        if (!this.vlContent) return;
+        const savedLogs = sessionStorage.getItem('consoleLogs');
+        if (savedLogs) {
+            this.vlContent.innerHTML = savedLogs;
+            this.vlContent.scrollTop = this.vlContent.scrollHeight;
+        }
     }
 
     clearVisualLog() {

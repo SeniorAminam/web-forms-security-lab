@@ -435,16 +435,18 @@ table th {
     border-top: 2px solid #00ff00;
     display: flex;
     flex-direction: column;
-    transition: height 0.3s ease;
+    transition: transform 0.3s ease;
     direction: ltr;
     text-align: left;
     box-shadow: 0 -5px 20px rgba(0, 255, 0, 0.2);
     backdrop-filter: blur(5px);
     transform: translateY(100%);
+    pointer-events: none;
 }
 
 #visual-logger.visible {
     transform: translateY(0);
+    pointer-events: auto;
 }
 
 #visual-logger.minimized {
@@ -613,6 +615,39 @@ table th {
     }
 }
 
+/* ==================== CONSOLE TOGGLE BUTTON ==================== */
+#console-toggle {
+    position: fixed;
+    bottom: 20px;
+    left: 20px;
+    z-index: 10002;
+    background: var(--card-bg);
+    border: 2px solid var(--primary-color);
+    color: var(--primary-color);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    cursor: pointer;
+    box-shadow: 0 0 20px var(--primary-glow);
+    transition: all 0.3s;
+}
+
+#console-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 30px var(--primary-glow);
+}
+
+:root.projector-mode #console-toggle {
+    background: #000000;
+    color: #ffffff;
+    border: 2px solid #ffffff;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
 /* ==================== PROJECTOR TOGGLE BUTTON ==================== */
 #projector-toggle {
     position: fixed;
@@ -634,6 +669,11 @@ table th {
     transition: all 0.3s;
 }
 
+#projector-toggle:hover {
+    transform: scale(1.1);
+    box-shadow: 0 0 30px var(--primary-glow);
+}
+
 :root.projector-mode #projector-toggle {
     background: #000000;
     color: #ffffff;
@@ -653,19 +693,14 @@ table th {
 
 [dir="rtl"] pre,
 [dir="rtl"] code {
-    direction: ltr;
-    text-align: left;
+direction: ltr;
+text-align: left;
 }
 
 html[lang="fa"],
 html[lang="ar"],
 html[lang="he"] {
-    direction: rtl;
-}
-
-[dir="rtl"] #projector-toggle {
-    right: auto;
-    left: 20px;
+direction: rtl;
 }
 
 /* Strict Text Direction & Alignment */
@@ -788,7 +823,36 @@ input[type="tel"],
     }
 
     #visual-logger {
-        height: 200px;
+        height: 150px;
+        width: 100%;
+        left: 0;
+        right: 0;
+        bottom: 0;
+    }
+
+    #visual-logger.minimized {
+        height: 35px;
+    }
+
+    .vl-content {
+        font-size: 11px;
+    }
+
+    .vl-title {
+        font-size: 12px;
+    }
+
+    #projector-toggle {
+        width: 40px;
+        height: 40px;
+        font-size: 1.2rem;
+        bottom: 10px;
+        right: 10px;
+    }
+
+    [dir="rtl"] #projector-toggle {
+        left: 10px;
+        right: auto;
     }
 }
 
