@@ -1,0 +1,14 @@
+# Chat data files
+chat_data.txt
+
+# System files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.log

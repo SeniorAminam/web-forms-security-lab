@@ -1,0 +1,58 @@
+/* Clickable Examples & Attack Buttons */
+.examples-container {
+    margin-top: 1rem;
+    padding: 1rem;
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    border: 1px dashed var(--border-color);
+}
+
+.examples-title {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.example-btn {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    margin: 0.25rem;
+    background: rgba(52, 211, 153, 0.1);
+    border: 1px solid var(--primary-color);
+    color: var(--primary-color);
+    border-radius: 20px;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    user-select: none;
+}
+
+.example-btn:hover {
+    background: var(--primary-color);
+    color: #000;
+    transform: translateY(-2px);
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.example-btn.attack {
+    border-color: var(--error-color);
+    color: var(--error-color);
+    background: rgba(248, 113, 113, 0.1);
+}
+
+.example-btn.attack:hover {
+    background: var(--error-color);
+    color: #fff;
+}
+
+.example-btn.safe {
+    border-color: #3b82f6;
+    color: #3b82f6;
+    background: rgba(59, 130, 246, 0.1);
+}
+
+.example-btn.safe:hover {
+    background: #3b82f6;
+    color: #fff;
+}

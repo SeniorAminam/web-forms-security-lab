@@ -1,0 +1,391 @@
+/**
+ * Project: Web Design Course Presentation - Hacker Edition
+ * Author: Amin Davodian (Mohammadamin Davodian)
+ * Website: https://senioramin.com
+ * LinkedIn: https://linkedin.com/in/SudoAmin
+ * GitHub: https://github.com/SeniorAminam
+ * Created: 2025-11-24
+ * 
+ * Advanced Animations - Cyberpunk effects and interactions
+ * Developed by Amin Davodian
+ */
+
+/* ==================== GLITCH EFFECTS ==================== */
+@keyframes glitch {
+    0% {
+        transform: translate(0);
+    }
+
+    20% {
+        transform: translate(-2px, 2px);
+    }
+
+    40% {
+        transform: translate(-2px, -2px);
+    }
+
+    60% {
+        transform: translate(2px, 2px);
+    }
+
+    80% {
+        transform: translate(2px, -2px);
+    }
+
+    100% {
+        transform: translate(0);
+    }
+}
+
+.glitch {
+    position: relative;
+    animation: glitch 0.3s infinite;
+}
+
+.glitch::before,
+.glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.glitch::before {
+    left: 2px;
+    text-shadow: -2px 0 #ff00de;
+    clip: rect(24px, 550px, 90px, 0);
+    animation: glitch-anim-1 2s infinite linear alternate-reverse;
+}
+
+.glitch::after {
+    left: -2px;
+    text-shadow: -2px 0 #00fff9;
+    clip: rect(85px, 550px, 140px, 0);
+    animation: glitch-anim-2 3s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim-1 {
+    0% {
+        clip: rect(random(100) + px, 9999px, random(100) + px, 0);
+    }
+
+    100% {
+        clip: rect(random(100) + px, 9999px, random(100) + px, 0);
+    }
+}
+
+@keyframes glitch-anim-2 {
+    0% {
+        clip: rect(random(100) + px, 9999px, random(100) + px, 0);
+    }
+
+    100% {
+        clip: rect(random(100) + px, 9999px, random(100) + px, 0);
+    }
+}
+
+/* ==================== NEON PULSE ==================== */
+@keyframes neon-pulse {
+
+    0%,
+    100% {
+        text-shadow:
+            0 0 4px #fff,
+            0 0 10px #fff,
+            0 0 20px var(--primary-color),
+            0 0 40px var(--primary-color),
+            0 0 80px var(--primary-color);
+    }
+
+    50% {
+        text-shadow:
+            0 0 2px #fff,
+            0 0 5px #fff,
+            0 0 10px var(--primary-color),
+            0 0 20px var(--primary-color),
+            0 0 40px var(--primary-color);
+    }
+}
+
+.neon-text {
+    animation: neon-pulse 1.5s ease-in-out infinite;
+}
+
+/* ==================== TYPING ANIMATION ==================== */
+@keyframes typing {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes blink-caret {
+
+    from,
+    to {
+        border-color: transparent;
+    }
+
+    50% {
+        border-color: var(--primary-color);
+    }
+}
+
+.typewriter {
+    overflow: hidden;
+    border-right: 0.15em solid var(--primary-color);
+    white-space: nowrap;
+    margin: 0 auto;
+    letter-spacing: 0.15em;
+    animation:
+        typing 3.5s steps(40, end),
+        blink-caret 0.75s step-end infinite;
+}
+
+/* ==================== MATRIX RAIN ==================== */
+@keyframes matrix-fall {
+    0% {
+        transform: translateY(-100%);
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(100vh);
+        opacity: 0;
+    }
+}
+
+.matrix-char {
+    position: absolute;
+    color: var(--primary-color);
+    font-family: 'Courier New', monospace;
+    font-size: 20px;
+    animation: matrix-fall linear infinite;
+}
+
+/* ==================== CYBERPUNK BORDER ==================== */
+@keyframes border-dance {
+
+    0%,
+    100% {
+        clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+    }
+
+    25% {
+        clip-path: polygon(0 0, 95% 5%, 95% 95%, 5% 100%);
+    }
+
+    50% {
+        clip-path: polygon(5% 0, 100% 0, 95% 100%, 0 95%);
+    }
+
+    75% {
+        clip-path: polygon(0 5%, 100% 0, 100% 95%, 0 100%);
+    }
+}
+
+.cyber-border {
+    position: relative;
+}
+
+.cyber-border::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    padding: 2px;
+    background: linear-gradient(45deg, var(--primary-color), var(--secondary-color));
+    -webkit-mask:
+        linear-gradient(#fff 0 0) content-box,
+        linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: border-dance 3s linear infinite;
+}
+
+/* ==================== LOADING SPINNER ==================== */
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+.cyber-spinner {
+    border: 4px solid rgba(16, 185, 129, 0.1);
+    border-top: 4px solid var(--primary-color);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    animation: spin 1s linear infinite;
+}
+
+/* ==================== HOVER EFFECTS ==================== */
+.cyber-button {
+    position: relative;
+    overflow: hidden;
+    transition: all 0.3s;
+}
+
+.cyber-button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(16, 185, 129, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.cyber-button:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+/* ==================== SLIDE IN ANIMATIONS ==================== */
+@keyframes slide-in-left {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slide-in-right {
+    from {
+        transform: translateX(100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+@keyframes slide-in-top {
+    from {
+        transform: translateY(-100%);
+        opacity: 0;
+    }
+
+    to {
+        transform: translateY(0);
+        opacity: 1;
+    }
+}
+
+@keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+.animate-slide-left {
+    animation: slide-in-left 0.5s ease-out;
+}
+
+.animate-slide-right {
+    animation: slide-in-right 0.5s ease-out;
+}
+
+.animate-slide-top {
+    animation: slide-in-top 0.5s ease-out;
+}
+
+.animate-fade {
+    animation: fade-in 0.5s ease-out;
+}
+
+/* ==================== SCAN LINE ==================== */
+@keyframes scan {
+    0% {
+        top: 0;
+    }
+
+    100% {
+        top: 100%;
+    }
+}
+
+.scanline {
+    position: relative;
+    overflow: hidden;
+}
+
+.scanline::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(to bottom,
+            transparent,
+            var(--primary-color),
+            transparent);
+    animation: scan 4s linear infinite;
+}
+
+/* ==================== HOLOGRAM EFFECT ==================== */
+@keyframes hologram {
+
+    0%,
+    100% {
+        opacity: 0.8;
+        transform: translateY(0);
+    }
+
+    50% {
+        opacity: 1;
+        transform: translateY(-2px);
+    }
+}
+
+.hologram {
+    animation: hologram 2s ease-in-out infinite;
+    filter:
+        drop-shadow(0 0 10px var(--primary-color)) drop-shadow(0 0 20px var(--primary-color));
+}
+
+/* ==================== DATA STREAM ==================== */
+@keyframes data-flow {
+    0% {
+        transform: translateX(-100%);
+    }
+
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+.data-stream {
+    position: relative;
+    overflow: hidden;
+}
+
+.data-stream::before {
+    content: '01010101';
+    position: absolute;
+    color: var(--primary-color);
+    font-family: monospace;
+    animation: data-flow 3s linear infinite;
+    opacity: 0.3;
+}

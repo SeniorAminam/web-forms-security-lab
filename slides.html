@@ -1,0 +1,484 @@
+#matrix-canvas {
+position: fixed;
+top: 0;
+left: 0;
+width: 100%;
+height: 100%;
+z-index: 0;
+opacity: 0.3;
+}
+
+.slide-container {
+height: 100vh;
+width: 100vw;
+overflow-y: scroll;
+scroll-snap-type: y mandatory;
+position: relative;
+z-index: 1;
+}
+
+.slide {
+height: 100vh;
+width: 100vw;
+scroll-snap-align: start;
+display: flex;
+flex-direction: column;
+justify-content: center;
+align-items: center;
+padding: 2rem;
+text-align: center;
+}
+
+.slide-content {
+background: rgba(15, 23, 42, 0.9);
+padding: 3rem;
+border: 1px solid var(--primary-color);
+border-radius: 4px;
+box-shadow: 0 0 50px rgba(16, 185, 129, 0.2);
+max-width: 1000px;
+width: 90%;
+backdrop-filter: blur(5px);
+}
+
+.slide h1 {
+font-size: 3.5rem;
+margin-bottom: 1rem;
+}
+
+.slide h2 {
+font-size: 2.5rem;
+}
+
+.slide ul {
+text-align: right;
+list-style-type: none;
+margin: 2rem 0;
+font-size: 1.3rem;
+}
+
+.slide li {
+margin-bottom: 1rem;
+padding-right: 2rem;
+position: relative;
+color: var(--text-color);
+}
+
+.slide li::before {
+content: ">";
+position: absolute;
+right: 0;
+color: var(--primary-color);
+font-weight: bold;
+}
+
+.btn-demo {
+display: inline-block;
+background: transparent;
+color: var(--primary-color);
+padding: 1rem 3rem;
+border: 2px solid var(--primary-color);
+text-decoration: none;
+font-size: 1.3rem;
+font-weight: bold;
+margin: 0.5rem;
+text-transform: uppercase;
+letter-spacing: 2px;
+transition: all 0.3s;
+border-radius: 4px;
+}
+
+.btn-demo:hover {
+background: var(--primary-color);
+color: #000;
+box-shadow: 0 0 30px var(--primary-glow);
+}
+
+.sub-text {
+color: var(--text-muted);
+font-size: 1.1rem;
+margin-top: 1rem;
+}
+
+.highlight {
+color: var(--error-color);
+font-weight: bold;
+}
+
+.grid-demos {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 1rem;
+margin: 2rem 0;
+}
+
+@media (max-width: 768px) {
+.grid-demos {
+grid-template-columns: 1fr;
+}
+}
+
+.slide-nav {
+position: fixed;
+bottom: 2rem;
+right: 2rem;
+z-index: 100;
+display: flex;
+gap: 0.5rem;
+}
+
+.slide-indicator {
+width: 12px;
+height: 12px;
+border-radius: 50%;
+background: rgba(16, 185, 129, 0.3);
+border: 1px solid var(--primary-color);
+cursor: pointer;
+transition: all 0.3s;
+}
+
+.slide-indicator.active {
+background: var(--primary-color);
+box-shadow: 0 0 10px var(--primary-glow);
+}
+</style>
+</head>
+
+<body>
+    <canvas id="matrix-canvas"></canvas>
+
+    <div class="slide-container">
+        <!-- Slide 1: Title -->
+        <div class="slide">
+            <div class="slide-content animate-fade">
+                <h1 class="neon-text" style="font-size: 4rem;">🔐 Web Security</h1>
+                <h2 style="color: var(--secondary-color);">Hacker Edition</h2>
+                <p class="sub-text" style="margin-top: 2rem; font-size: 1.3rem;">
+                    تست نفوذ و امنیت برنامه‌های تحت وب
+                </p>
+                <p style="margin-top: 1rem; color: var(--text-muted);">
+                    Developed by <strong style="color: var(--primary-color);">Amin Davodian</strong>
+                </p>
+                <div style="margin-top: 3rem;">
+                    <a href="dashboard.php" class="btn-demo">🚀 Launch Dashboard</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Agenda -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>📋 دستور کار (Agenda)</h2>
+                <ul>
+                    <li>رهگیری داده‌ها (GET vs POST)</li>
+                    <li>اعتبارسنجی ورودی‌ها (Input Validation)</li>
+                    <li>تزریق کد مخرب (XSS Attack)</li>
+                    <li>تزریق SQL (SQL Injection) 💎</li>
+                    <li>جعل درخواست (CSRF Attack) 💎</li>
+                    <li>آپلود فایل خطرناک (Webshell) 💎</li>
+                    <li>عملیات نهایی: ساخت سیستم امن</li>
+                </ul>
+                <p class="sub-text" style="margin-top: 2rem;">
+                    مدت زمان: 45-60 دقیقه | سطح: مقدماتی تا پیشرفته
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 3: GET vs POST -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>1️⃣ رهگیری داده‌ها (Data Sniffing)</h2>
+                <p>ببینیم وقتی دکمه ارسال رو می‌زنیم واقعاً چه اتفاقی می‌افتد!</p>
+                <div class="grid-demos" style="text-align: center;">
+                    <div style="border: 1px solid #3b82f6; padding: 1.5rem; border-radius: 8px;">
+                        <h3 style="color: #3b82f6; font-size: 1.5rem;">GET</h3>
+                        <p style="margin-top: 1rem;">اطلاعات در <span class="highlight">URL</span> نمایش داده می‌شود</p>
+                        <p style="font-size: 0.9rem; color: var(--text-muted);">مناسب: جستجو، فیلتر</p>
+                    </div>
+                    <div style="border: 1px solid var(--primary-color); padding: 1.5rem; border-radius: 8px;">
+                        <h3 style="color: var(--primary-color); font-size: 1.5rem;">POST</h3>
+                        <p style="margin-top: 1rem;">اطلاعات در <span
+                                style="color: var(--primary-color); font-weight: bold;">بدنه درخواست</span> مخفی است</p>
+                        <p style="font-size: 0.9rem; color: var(--text-muted);">مناسب: رمز عبور، ثبت اطلاعات</p>
+                    </div>
+                </div>
+                <a href="01_get_post.php" target="_blank" class="btn-demo">اجرای شنودگر 📡</a>
+            </div>
+        </div>
+
+        <!-- Slide 4: Validation -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>2️⃣ اعتبارسنجی ورودی‌ها</h2>
+                <p>اولین خط دفاعی در برابر نفوذ!</p>
+                <div style="text-align: right; margin: 2rem 0; font-size: 1.1rem;">
+                    <p>✅ بررسی نوع داده (Type Checking)</p>
+                    <p>✅ محدودیت طول (Length Limits)</p>
+                    <p>✅ فرمت‌های معتبر (Format Validation)</p>
+                    <p>✅ اعمال در سمت سرور (Server-Side)</p>
+                </div>
+                <p class="highlight" style="font-size: 1.2rem;">⚠️ هرگز به ورودی کاربر اعتماد نکنید!</p>
+                <a href="02_validation.php" target="_blank" class="btn-demo">تست اعتبارسنجی 🛡️</a>
+            </div>
+        </div>
+
+        <!-- Slide 5: XSS -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2 style="color: var(--error-color);">3️⃣ حمله XSS (Cross-Site Scripting)</h2>
+                <p>خطرناک‌ترین حمله سمت کلاینت!</p>
+                <div style="background: rgba(239, 68, 68, 0.1); padding: 1.5rem; border-radius: 8px; margin: 2rem 0;">
+                    <h3 style="color: var(--error-color); font-size: 1.3rem;">💀 چه اتفاقی می‌افتد؟</h3>
+                    <ul style="text-align: right; font-size: 1rem;">
+                        <li>سرقت Cookie و Session</li>
+                        <li>دستکاری صفحه وب</li>
+                        <li>سرقت اطلاعات کاربر</li>
+                        <li>انتقال به سایت مخرب</li>
+                    </ul>
+                </div>
+                <div>
+                    <a href="03_xss_demo.php" target="_blank" class="btn-demo"
+                        style="border-color: var(--error-color); color: var(--error-color);">XSS Basic Demo 💉</a>
+                    <a href="04_live_chat_xss.php" target="_blank" class="btn-demo"
+                        style="border-color: var(--error-color); color: var(--error-color);">Live Chat XSS 💬</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 6: SQL Injection -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2 style="color: var(--error-color);">4️⃣ SQL Injection 🗄️</h2>
+                <p>دستکاری مستقیم پایگاه داده!</p>
+                <div
+                    style="background: rgba(0,0,0,0.5); padding: 1rem; border-radius: 8px; margin: 2rem 0; direction: ltr; text-align: left;">
+                    <code style="color: var(--primary-color);">
+                        Username: admin' --<br>
+                        Password: (anything)<br><br>
+                        Result: Authentication Bypassed! 🚨
+                    </code>
+                </div>
+                <p class="highlight">پایگاه داده شما در دست هکر!</p>
+                <a href="05_sql_injection.php" target="_blank" class="btn-demo"
+                    style="border-color: var(--error-color); color: var(--error-color);">SQL Lab 💉</a>
+            </div>
+        </div>
+
+        <!-- Slide 7: CSRF -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2 style="color: var(--warning-color);">5️⃣ CSRF Attack 🎯</h2>
+                <p>جعل درخواست - بدون اطلاع کاربر!</p>
+                <div style="margin: 2rem 0;">
+                    <p style="font-size: 1.1rem; line-height: 1.8;">
+                        کاربر به بانک لاگین کرده → سشن فعال است<br>
+                        سایت مخرب درخواست ارسال می‌کند<br>
+                        بانک فکر می‌کند کاربر واقعی است!<br>
+                        <span class="highlight">💸 پول منتقل شد!</span>
+                    </p>
+                </div>
+                <a href="06_csrf_demo.php" target="_blank" class="btn-demo"
+                    style="border-color: var(--warning-color); color: var(--warning-color);">CSRF Bank Demo 💳</a>
+            </div>
+        </div>
+
+        <!-- Slide 8: File Upload -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2 style="color: var(--error-color);">6️⃣ File Upload Attack 📤</h2>
+                <p>آپلود Webshell = کنترل کامل سرور!</p>
+                <div style="background: rgba(239, 68, 68, 0.1); padding: 1.5rem; border-radius: 8px; margin: 2rem 0;">
+                    <h3 style="color: var(--error-color);">⚠️ سناریو حمله:</h3>
+                    <p style="font-size: 1.1rem; line-height: 1.8; text-align: right;">
+                        1. آپلود فایل shell.php<br>
+                        2. دسترسی به فایل از مرورگر<br>
+                        3. اجرای دستورات سیستمی<br>
+                        4. کنترل کامل سرور! 💀
+                    </p>
+                </div>
+                <a href="07_file_upload.php" target="_blank" class="btn-demo"
+                    style="border-color: var(--error-color); color: var(--error-color);">Webshell Lab 💀</a>
+            </div>
+        </div>
+
+        <!-- Slide 9: Final Project -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>7️⃣ پروژه نهایی: سیستم امن 🏆</h2>
+                <p>ترکیب تمام تکنیک‌های دفاعی</p>
+                <div style="background: rgba(16, 185, 129, 0.1); padding: 1.5rem; border-radius: 8px; margin: 2rem 0;">
+                    <h3 style="color: var(--primary-color);">✅ ویژگی‌های امنیتی:</h3>
+                    <ul style="text-align: right; font-size: 1.1rem;">
+                        <li>Input Validation کامل</li>
+                        <li>Output Encoding (XSS Protection)</li>
+                        <li>CSRF Token Protection</li>
+                        <li>Secure Password Handling</li>
+                        <li>Session Security</li>
+                    </ul>
+                </div>
+                <a href="final/register.php" target="_blank" class="btn-demo">ثبت نام امن 🔒</a>
+            </div>
+        </div>
+
+        <!-- Slide 10: Summary -->
+        <div class="slide">
+            <div class="slide-content">
+                <h2>📊 خلاصه و نتیجه‌گیری</h2>
+                <div style="text-align: right; margin: 2rem 0; font-size: 1.1rem;">
+                    <h3 style="color: var(--primary-color);">🛡️ اصول طلایی امنیت:</h3>
+                    <ul>
+                        <li><strong>Never trust user input</strong> - هرگز به ورودی کاربر اعتماد نکنید</li>
+                        <li><strong>Validate server-side</strong> - اعتبارسنجی در سمت سرور</li>
+                        <li><strong>Encode output</strong> - رمزنگاری خروجی</li>
+                        <li><strong>Use frameworks</strong> - از فریم‌ورک‌ها استفاده کنید</li>
+                        <li><strong>Keep updated</strong> - همیشه به‌روز باشید</li>
+                        <li><strong>Security by design</strong> - امنیت از ابتدا</li>
+                    </ul>
+                </div>
+                <p class="highlight" style="font-size: 1.3rem; margin-top: 2rem;">
+                    🔐 Security is not a feature, it's a necessity!
+                </p>
+            </div>
+        </div>
+
+        <!-- Slide 11: Thank You -->
+        <div class="slide">
+            <div class="slide-content">
+                <h1 class="neon-text" style="font-size: 4rem;">🙏 سپاسگزاریم</h1>
+                <p style="font-size: 1.5rem; margin: 2rem 0;">
+                    Questions & Answers
+                </p>
+                <div style="margin-top: 3rem;">
+                    <p style="color: var(--text-muted); font-size: 1.1rem;">Developed by</p>
+                    <h2 style="color: var(--primary-color); margin: 1rem 0;">Amin Davodian</h2>
+                    <p style="font-size: 1rem; color: var(--text-muted);">
+                        🌐 <a href="https://senioramin.com" target="_blank"
+                            style="color: var(--primary-color);">senioramin.com</a><br>
+                        💼 <a href="https://linkedin.com/in/SudoAmin" target="_blank"
+                            style="color: var(--primary-color);">LinkedIn</a> |
+                        🐙 <a href="https://github.com/SeniorAminam" target="_blank"
+                            style="color: var(--primary-color);">GitHub</a>
+                    </p>
+                </div>
+                <div style="margin-top: 3rem;">
+                    <a href="dashboard.php" class="btn-demo">🎯 Back to Dashboard</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Slide Navigation -->
+    <div class="slide-nav">
+        <div class="slide-indicator active" data-slide="0"></div>
+        <div class="slide-indicator" data-slide="1"></div>
+        <div class="slide-indicator" data-slide="2"></div>
+        <div class="slide-indicator" data-slide="3"></div>
+        <div class="slide-indicator" data-slide="4"></div>
+        <div class="slide-indicator" data-slide="5"></div>
+        <div class="slide-indicator" data-slide="6"></div>
+        <div class="slide-indicator" data-slide="7"></div>
+        <div class="slide-indicator" data-slide="8"></div>
+        <div class="slide-indicator" data-slide="9"></div>
+        <div class="slide-indicator" data-slide="10"></div>
+    </div>
+
+    <script>
+        // Matrix Rain Effect
+        const canvas = document.getElementById('matrix-canvas');
+        const ctx = canvas.getContext('2d');
+
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+
+        const katakana = 'アァカサタナハマヤャラワガザダバパイィキシチニヒミリヰギジヂビピウゥクスツヌフムユュルグズブヅプエェケセテネヘメレヱゲゼデベペオォコソトノホモヨョロヲゴゾドボポヴッン';
+        const latin = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const nums = '0123456789';
+        const alphabet = katakana + latin + nums;
+
+        const fontSize = 16;
+        const columns = canvas.width / fontSize;
+
+        const rainDrops = [];
+
+        for (let x = 0; x < columns; x++) {
+            rainDrops[x] = 1;
+        }
+
+        const draw = () => {
+            ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+            ctx.fillStyle = '#0F0';
+            ctx.font = fontSize + 'px monospace';
+
+            for (let i = 0; i < rainDrops.length; i++) {
+                const text = alphabet.charAt(Math.floor(Math.random() * alphabet.length));
+                ctx.fillText(text, i * fontSize, rainDrops[i] * fontSize);
+
+                if (rainDrops[i] * fontSize > canvas.height && Math.random() > 0.975) {
+                    rainDrops[i] = 0;
+                }
+                rainDrops[i]++;
+            }
+        };
+
+        setInterval(draw, 30);
+
+        window.addEventListener('resize', () => {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        });
+
+        // Slide Navigation
+        const container = document.querySelector('.slide-container');
+        const indicators = document.querySelectorAll('.slide-indicator');
+        const slides = document.querySelectorAll('.slide');
+
+        indicators.forEach((indicator, index) => {
+            indicator.addEventListener('click', () => {
+                slides[index].scrollIntoView({ behavior: 'smooth' });
+            });
+        });
+
+        // Update active indicator on scroll
+        container.addEventListener('scroll', () => {
+            const scrollPosition = container.scrollTop;
+            const slideHeight = window.innerHeight;
+            const currentSlide = Math.round(scrollPosition / slideHeight);
+
+            indicators.forEach((ind, idx) => {
+                if (idx === currentSlide) {
+                    ind.classList.add('active');
+                } else {
+                    ind.classList.remove('active');
+                }
+            });
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            const scrollPosition = container.scrollTop;
+            const slideHeight = window.innerHeight;
+            const currentSlide = Math.round(scrollPosition / slideHeight);
+
+            if (e.key === 'ArrowDown' || e.key === 'PageDown' || e.key === ' ') {
+                e.preventDefault();
+                if (currentSlide < slides.length - 1) {
+                    slides[currentSlide + 1].scrollIntoView({ behavior: 'smooth' });
+                }
+            } else if (e.key === 'ArrowUp' || e.key === 'PageUp') {
+                e.preventDefault();
+                if (currentSlide > 0) {
+                    slides[currentSlide - 1].scrollIntoView({ behavior: 'smooth' });
+                }
+            } else if (e.key === 'Home') {
+                e.preventDefault();
+                slides[0].scrollIntoView({ behavior: 'smooth' });
+            } else if (e.key === 'End') {
+                e.preventDefault();
+                slides[slides.length - 1].scrollIntoView({ behavior: 'smooth' });
+            }
+        });
+    </script>
+</body>
+
+</html>
