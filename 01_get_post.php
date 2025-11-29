@@ -98,24 +98,34 @@
             const input = document.getElementById('getQuery');
             input.value = value;
             input.style.backgroundColor = '#fffbeb';
-            setTimeout(() => input.style.backgroundColor = '', 500);
             
             // Log to console
             if(window.logger) {
                 window.logger.log('Interaction', `Filled GET input with: ${value}`, 'info');
             }
+            
+            // Submit form after a short delay
+            setTimeout(() => {
+                input.style.backgroundColor = '';
+                document.getElementById('getForm').submit();
+            }, 300);
         }
 
         function fillPost(value) {
             const input = document.getElementById('postPassword');
             input.value = value;
             input.style.backgroundColor = '#fffbeb';
-            setTimeout(() => input.style.backgroundColor = '', 500);
             
             // Log to console
             if(window.logger) {
                 window.logger.log('Interaction', `Filled POST input with: ${value}`, 'info');
             }
+            
+            // Submit form after a short delay
+            setTimeout(() => {
+                input.style.backgroundColor = '';
+                document.getElementById('postForm').submit();
+            }, 300);
         }
     </script>
 </body>

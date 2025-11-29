@@ -20,6 +20,7 @@ class ConsoleLogger {
     init() {
         this.displayWelcome();
         this.setupAjaxLogging();
+        this.setupXHRLogging();
         this.setupErrorLogging();
         
         // Wait for DOM to be ready before initializing UI elements
@@ -71,6 +72,13 @@ class ConsoleLogger {
             const logger = document.getElementById('visual-logger');
             if (logger) {
                 logger.classList.toggle('visible');
+                
+                // Add/remove console-open class to body for padding
+                if (logger.classList.contains('visible')) {
+                    document.body.classList.add('console-open');
+                } else {
+                    document.body.classList.remove('console-open');
+                }
             }
         });
 
@@ -125,6 +133,13 @@ class ConsoleLogger {
             header.addEventListener('click', (e) => {
                 if (e.target.closest('.vl-btn')) return; // Don't toggle if clicking buttons
                 container.classList.toggle('visible');
+                
+                // Add/remove console-open class to body for padding
+                if (container.classList.contains('visible')) {
+                    document.body.classList.add('console-open');
+                } else {
+                    document.body.classList.remove('console-open');
+                }
             });
         }
 
@@ -261,10 +276,17 @@ class ConsoleLogger {
         console.group(`%c📡 #${this.eventCounter} FORM SUBMIT ${this.getTimestamp()}`,
             'color: #f59e0b; font-weight: bold; font-size: 14px;');
         console.log('%cMethod:', 'color: #8b5cf6;', method);
+        console.log('%cAction:', 'color: #8b5cf6;', action);
+        console.log('%cData:', 'color: #8b5cf6;');
         console.table(dataObject);
         console.groupEnd();
 
-        this.appendToVisualLog('warning', `Form Submission (${method})`, dataObject);
+        const details = {
+            method: method,
+            action: action,
+            data: dataObject
+        };
+        this.appendToVisualLog('warning', `📝 FORM ${method}`, details);
     }
 
     // Log input changes
@@ -288,23 +310,102 @@ class ConsoleLogger {
             self.eventCounter++;
             const url = args[0];
             const options = args[1] || {};
+            const method = options.method || 'GET';
+            
+            // Extract body data if present
+            let bodyData = null;
+            if (options.body) {
+                try {
+                    if (typeof options.body === 'string') {
+                        bodyData = JSON.parse(options.body);
+                    } else if (options.body instanceof FormData) {
+                        bodyData = {};
+                        for (let [key, value] of options.body.entries()) {
+                            bodyData[key] = key.toLowerCase().includes('pass') ? '••••••••' : value;
+                        }
+                    } else {
+                        bodyData = options.body;
+                    }
+                } catch (e) {
+                    bodyData = options.body;
+                }
+            }
 
-            console.group(`%c🌐 #${self.eventCounter} AJAX REQUEST ${self.getTimestamp()}`,
+            console.group(`%c🌐 #${self.eventCounter} FETCH ${method} ${self.getTimestamp()}`,
                 'color: #3b82f6; font-weight: bold;');
             console.log('URL:', url);
+            console.log('Method:', method);
+            if (bodyData) console.log('Body:', bodyData);
             console.groupEnd();
 
-            self.appendToVisualLog('info', 'AJAX Request', `URL: ${url}`);
+            const details = {
+                method: method,
+                url: url,
+                ...(bodyData && { body: bodyData })
+            };
+            self.appendToVisualLog('info', `📤 FETCH ${method}`, details);
 
             return originalFetch.apply(this, args)
                 .then(response => {
-                    self.appendToVisualLog('success', 'AJAX Response', `Status: ${response.status}`);
+                    self.appendToVisualLog('success', `📥 Response ${response.status}`, `URL: ${url}`);
                     return response;
                 })
                 .catch(error => {
-                    self.appendToVisualLog('error', 'AJAX Error', error.message);
+                    self.appendToVisualLog('error', '❌ FETCH Error', error.message);
                     throw error;
                 });
+        };
+    }
+
+    // Setup XMLHttpRequest logging
+    setupXHRLogging() {
+        const originalOpen = XMLHttpRequest.prototype.open;
+        const originalSend = XMLHttpRequest.prototype.send;
+        const self = this;
+
+        XMLHttpRequest.prototype.open = function(method, url, ...args) {
+            this._logMethod = method;
+            this._logUrl = url;
+            return originalOpen.apply(this, [method, url, ...args]);
+        };
+
+        XMLHttpRequest.prototype.send = function(body) {
+            self.eventCounter++;
+            const method = this._logMethod || 'GET';
+            const url = this._logUrl || '';
+            
+            let bodyData = null;
+            if (body) {
+                try {
+                    bodyData = JSON.parse(body);
+                } catch (e) {
+                    bodyData = body;
+                }
+            }
+
+            console.group(`%c🔗 #${self.eventCounter} XHR ${method} ${self.getTimestamp()}`,
+                'color: #8b5cf6; font-weight: bold;');
+            console.log('URL:', url);
+            console.log('Method:', method);
+            if (bodyData) console.log('Body:', bodyData);
+            console.groupEnd();
+
+            const details = {
+                method: method,
+                url: url,
+                ...(bodyData && { body: bodyData })
+            };
+            self.appendToVisualLog('info', `🔗 XHR ${method}`, details);
+
+            this.addEventListener('load', function() {
+                self.appendToVisualLog('success', `✅ XHR Response ${this.status}`, `URL: ${url}`);
+            });
+
+            this.addEventListener('error', function() {
+                self.appendToVisualLog('error', '❌ XHR Error', `URL: ${url}`);
+            });
+
+            return originalSend.apply(this, [body]);
         };
     }
 
