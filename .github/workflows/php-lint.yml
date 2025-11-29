@@ -20,4 +20,6 @@ jobs:
 
       - name: Run PHP syntax check
         run: |
-          find . -type f -name "*.php" -print0 | xargs -0 -n1 php -l
+          for file in $(find . -type f -name "*.php"); do
+            php -l "$file" || exit 1
+          done
