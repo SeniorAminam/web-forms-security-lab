@@ -1,8 +1,29 @@
 # 🎤 اسکریپت ارائه (Presentation Script)
-
+ 
 **مدت زمان کل:** 60 دقیقه  
 **نویسنده:** Amin Davodian  
 **تاریخ:** 2025-11-24
+
+**Short English overview:**  
+This file is a full 60-minute presentation script for the *Web Security Lab – Hacker Edition* project.  
+It walks you, as the presenter, through each demo page (`01_get_post.php`, `02_validation.php`, `03_xss_demo.php`,  
+`04_live_chat_xss.php`, `05_sql_injection.php`, `06_csrf_demo.php`, `07_file_upload.php`, and the `final/` exercises)  
+with exact speaking text, actions, and timing.  
+You can run the project either with the PHP built-in server:
+
+```bash
+php -S localhost:8000
+# then open http://localhost:8000/dashboard.php
+```
+
+or with **XAMPP**:
+
+1. Copy the project folder into your `htdocs` directory (for example: `C:\xampp\htdocs\tsw`).
+2. Start Apache from the XAMPP Control Panel.
+3. Open `http://localhost/tsw/dashboard.php` in your browser.
+
+بقیه‌ی این فایل به زبان فارسی نوشته شده و قدم به قدم توضیح می‌دهد که در هر دقیقه از ارائه،  
+کدام صفحه را باز کنی، چه چیزی بگویی و روی کدام فایل‌های PHP تمرکز کنی.
 
 ---
 
