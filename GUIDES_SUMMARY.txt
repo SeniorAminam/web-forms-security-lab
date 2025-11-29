@@ -1,0 +1,337 @@
+================================================================================
+                    WEB SECURITY LAB - GUIDES SUMMARY
+                        راهنماهای جامع پروژه
+================================================================================
+
+PROJECT: Web Design Course Presentation - Hacker Edition
+AUTHOR: Amin Davodian (Mohammadamin Davodian)
+WEBSITE: https://senioramin.com
+GITHUB: https://github.com/SeniorAminam
+DATE: November 24, 2025
+
+================================================================================
+                            CREATED GUIDES
+================================================================================
+
+✅ GUIDE_01_GET_POST.md
+   - فایل: 01_get_post.php
+   - موضوع: تفاوت GET و POST
+   - سطح: Basic
+   - مدت: 10-15 دقیقه
+   - مفاهیم: HTTP Methods, Request Interception
+
+✅ GUIDE_02_VALIDATION.md
+   - فایل: 02_validation.php
+   - موضوع: اعتبارسنجی ورودی‌ها
+   - سطح: Basic
+   - مدت: 15-20 دقیقه
+   - مفاهیم: Server-side Validation, Error Handling
+
+✅ GUIDE_03_XSS_DEMO.md
+   - فایل: 03_xss_demo.php
+   - موضوع: حمله XSS بازتابی
+   - سطح: Intermediate
+   - مدت: 20-25 دقیقه
+   - مفاهیم: Reflected XSS, htmlspecialchars()
+
+✅ GUIDE_04_LIVE_CHAT_XSS.md
+   - فایل: 04_live_chat_xss.php
+   - موضوع: حمله XSS ماندگار
+   - سطح: Intermediate
+   - مدت: 20-25 دقیقه
+   - مفاهیم: Persistent XSS, File Storage, Security Toggle
+
+✅ GUIDE_05_SQL_INJECTION.md
+   - فایل: 05_sql_injection.php
+   - موضوع: حمله SQL Injection
+   - سطح: Advanced
+   - مدت: 25-30 دقیقه
+   - مفاهیم: SQL Injection, Parameterized Queries
+
+✅ GUIDE_06_CSRF_DEMO.md
+   - فایل: 06_csrf_demo.php
+   - موضوع: حمله CSRF
+   - سطح: Advanced
+   - مدت: 25-30 دقیقه
+   - مفاهیم: CSRF, CSRF Tokens, Session Management
+
+✅ GUIDE_07_FILE_UPLOAD.md
+   - فایل: 07_file_upload.php
+   - موضوع: آپلود فایل و Webshell
+   - سطح: Advanced
+   - مدت: 25-30 دقیقه
+   - مفاهیم: File Upload Vulnerability, Webshell
+
+✅ GUIDE_DASHBOARD.md
+   - فایل: dashboard.php
+   - موضوع: صفحه ناوبری مرکزی
+   - سطح: Final
+   - مدت: 5-10 دقیقه
+   - مفاهیم: Navigation Hub, UI/UX
+
+✅ GUIDE_FINAL_PROJECT.md
+   - فایل: final/register.php, final/profile.php
+   - موضوع: پروژه جمع‌بندی
+   - سطح: Final
+   - مدت: 20-25 دقیقه
+   - مفاهیم: Complete Workflow, Security Integration
+
+✅ GUIDE_ASSETS_AND_CONFIG.md
+   - فایل‌ها: assets/, configuration files
+   - موضوع: فایل‌های پشتیبانی
+   - سطح: Support
+   - مدت: 15-20 دقیقه
+   - مفاهیم: CSS, JavaScript, Configuration
+
+✅ GUIDE_INDEX.md
+   - فایل: فهرست کلی
+   - موضوع: نقشه راه و فهرست
+   - سطح: Overview
+   - مدت: 5 دقیقه
+   - مفاهیم: Learning Paths, Navigation
+
+================================================================================
+                         STATISTICS
+================================================================================
+
+Total Guides Created: 11
+Total Content: ~50,000+ words
+Total Estimated Reading Time: 150+ minutes
+Languages: Persian (فارسی) + English
+
+Guides by Level:
+- Basic: 2 guides
+- Intermediate: 2 guides
+- Advanced: 3 guides
+- Final: 2 guides
+- Support: 2 guides
+
+================================================================================
+                    CONTENT STRUCTURE
+================================================================================
+
+Each guide includes:
+
+✓ خلاصه‌ی کلی (Overview)
+✓ ساختار فایل (File Structure)
+✓ تحلیل کد بخش به بخش (Code Analysis)
+✓ نحوه استفاده - مثال‌های عملی (Usage Examples)
+✓ نکات امنیتی (Security Notes)
+✓ جداول مقایسه‌ای (Comparison Tables)
+✓ درس‌های یادگیری (Learning Outcomes)
+✓ ارتباط با فایل‌های دیگر (File Relations)
+✓ خلاصه نهایی (Summary)
+
+================================================================================
+                    LEARNING PATHS
+================================================================================
+
+Path 1: Quick Start (30 minutes)
+├── Dashboard
+├── GET vs POST
+└── Validation
+
+Path 2: XSS Focus (50 minutes)
+├── XSS Demo
+├── Live Chat XSS
+└── Final Project
+
+Path 3: Advanced Attacks (80 minutes)
+├── SQL Injection
+├── CSRF Demo
+└── File Upload
+
+Path 4: Complete (150+ minutes)
+└── All guides in sequence
+
+================================================================================
+                    KEY FEATURES
+================================================================================
+
+✓ حرفه‌ای و انسان‌گونه (Professional & Human-like)
+✓ تفصیلی و جامع (Detailed & Comprehensive)
+✓ مثال‌های عملی (Practical Examples)
+✓ نکات امنیتی (Security Notes)
+✓ کد واقعی (Real Code)
+✓ خروجی‌های مشخص (Clear Outputs)
+✓ جداول و نمودارها (Tables & Charts)
+✓ ارتباطات میان فایل‌ها (File Relations)
+
+================================================================================
+                    SECURITY CONCEPTS COVERED
+================================================================================
+
+HTTP & Web Basics:
+- GET vs POST methods
+- Request/Response cycle
+- URL encoding
+
+Input Validation:
+- Server-side validation
+- Error handling
+- User feedback
+
+XSS (Cross-Site Scripting):
+- Reflected XSS
+- Persistent XSS
+- htmlspecialchars() defense
+
+SQL Injection:
+- Query manipulation
+- Authentication bypass
+- Prepared statements
+
+CSRF (Cross-Site Request Forgery):
+- Token-based protection
+- Session management
+- SameSite cookies
+
+File Upload Security:
+- Extension validation
+- MIME type checking
+- Webshell prevention
+
+================================================================================
+                    USAGE INSTRUCTIONS
+================================================================================
+
+For Students:
+1. Open dashboard.php
+2. Choose a demo
+3. Read corresponding GUIDE_XX.md
+4. Test examples
+5. Review security notes
+
+For Teachers:
+1. Select a learning path
+2. Prepare guides for class
+3. Show live demos
+4. Ask discussion questions
+5. Assign exercises
+
+For Self-Study:
+1. Pick a guide
+2. Read code line by line
+3. Test examples
+4. Review security concepts
+5. Practice variations
+
+================================================================================
+                    FILE LOCATIONS
+================================================================================
+
+All guides are in the project root directory:
+
+d:\Amin\Projects\Programming\Telegram\Bots\Tests\Erae\Tsw\
+
+├── GUIDE_01_GET_POST.md
+├── GUIDE_02_VALIDATION.md
+├── GUIDE_03_XSS_DEMO.md
+├── GUIDE_04_LIVE_CHAT_XSS.md
+├── GUIDE_05_SQL_INJECTION.md
+├── GUIDE_06_CSRF_DEMO.md
+├── GUIDE_07_FILE_UPLOAD.md
+├── GUIDE_DASHBOARD.md
+├── GUIDE_FINAL_PROJECT.md
+├── GUIDE_ASSETS_AND_CONFIG.md
+├── GUIDE_INDEX.md
+└── GUIDES_SUMMARY.txt (this file)
+
+================================================================================
+                    QUICK REFERENCE
+================================================================================
+
+GET vs POST:
+- GET: Data in URL (visible)
+- POST: Data in body (hidden)
+
+Validation:
+- Always validate server-side
+- Use filter_var() for emails
+- Check length and type
+
+XSS Prevention:
+- htmlspecialchars() for output
+- Input validation
+- Content Security Policy
+
+SQL Injection Prevention:
+- Prepared statements
+- Parameterized queries
+- Input validation
+
+CSRF Prevention:
+- CSRF tokens
+- SameSite cookies
+- Origin header check
+
+File Upload Security:
+- Whitelist extensions
+- Check MIME type
+- Validate content
+- Random filename
+
+================================================================================
+                    AUTHOR INFORMATION
+================================================================================
+
+Developed by: Amin Davodian (Mohammadamin Davodian)
+Website: https://senioramin.com
+GitHub: https://github.com/SeniorAminam
+LinkedIn: https://linkedin.com/in/SudoAmin
+
+Project: Web Design Course Presentation - Hacker Edition
+Purpose: Educational security demonstration
+License: MIT
+
+================================================================================
+                    NEXT STEPS
+================================================================================
+
+1. Start with GUIDE_INDEX.md for overview
+2. Choose a learning path
+3. Open dashboard.php in browser
+4. Click on a demo
+5. Read corresponding guide
+6. Test examples
+7. Review security notes
+8. Practice variations
+
+================================================================================
+                    SUPPORT & RESOURCES
+================================================================================
+
+Within Project:
+- README.md (Project overview)
+- PRESENTATION_SCRIPT.md (Talk script)
+- PRESENTATION_FORMS.md (Forms script)
+- README_STEPBYSTEP.md (Step-by-step guide)
+
+External Resources:
+- OWASP Top 10
+- MDN Web Docs
+- PHP Security Manual
+- CWE Top 25
+
+================================================================================
+                    COMPLETION STATUS
+================================================================================
+
+✅ All 11 guides completed
+✅ All code sections analyzed
+✅ All examples tested
+✅ All security notes included
+✅ All cross-references added
+✅ All formatting completed
+
+Ready for: Students, Teachers, Security Professionals, Developers
+
+================================================================================
+
+Created: November 24, 2025
+Version: 1.0
+Status: Complete
+
+Developed by Amin Davodian - Web Security Lab
+
+================================================================================
