@@ -164,14 +164,19 @@ if (is_dir($uploadDir)) {
         <div class="grid">
             <!-- Upload Form -->
             <div class="card">
-                    if (in_array($ext, ['jpg', 'jpeg', 'png', 'gif'])):
-                    ?>
-                        <img src="<?php echo $uploadedFile; ?>" class="file-preview" alt="Uploaded image">
-                    <?php else: ?>
-                        <div class="alert alert-warning">
-                            File uploaded but cannot be previewed (not an image)
-                        </div>
-                    <?php endif; ?>
+                <h2><?php echo $secureMode ? '✅ Secure Upload' : '❌ Vulnerable Upload'; ?></h2>
+                <p><?php echo $secureMode ? 'Strict validation enabled' : 'No validation - Educational demo only!'; ?></p>
+                
+                <form method="POST" enctype="multipart/form-data">
+                    <div class="form-group">
+                        <label>Select File to Upload:</label>
+                        <input type="file" name="uploaded_file" id="fileInput" required>
+                    </div>
+                    <button type="submit">Upload File</button>
+                </form>
+
+                <?php if ($uploadedFile && in_array(strtolower(pathinfo($uploadedFile, PATHINFO_EXTENSION)), ['jpg', 'jpeg', 'png', 'gif'])): ?>
+                    <img src="<?php echo htmlspecialchars($uploadedFile, ENT_QUOTES, 'UTF-8'); ?>" class="file-preview" alt="Uploaded image">
                 <?php endif; ?>
 
                 <div class="file-list">
@@ -179,7 +184,7 @@ if (is_dir($uploadDir)) {
                     <?php if (count($uploadedFiles) > 0): ?>
                         <?php foreach ($uploadedFiles as $file): ?>
                             <div class="file-item">
-                                <span><?php echo htmlspecialchars($file); ?></span>
+                                <span><?php echo htmlspecialchars($file, ENT_QUOTES, 'UTF-8'); ?></span>
                                 <span style="font-size: 0.8rem; color: var(--text-muted);">
                                     <?php echo number_format(filesize($uploadDir . $file) / 1024, 2); ?> KB
                                 </span>
