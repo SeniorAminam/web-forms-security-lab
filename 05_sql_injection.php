@@ -146,6 +146,9 @@ if (isset($_GET['search'])) {
             <a href="?secure=1" class="badge" style="<?php echo !$isVulnerable ? 'background:var(--primary-color); color:#000;' : ''; ?> padding:0.5rem 1rem; margin:0.5rem; text-decoration:none; color:white;">
                 ✅ Secure Mode
             </a>
+            <a href="reset_page.php?page=05_sql_injection.php<?php echo $isVulnerable ? '' : '&secure=1'; ?>" class="badge" style="background:var(--warning-color); color:#000; padding:0.5rem 1rem; margin:0.5rem; text-decoration:none;">
+                🔄 Reset All
+            </a>
         </div>
 
         <div class="grid">
@@ -201,10 +204,39 @@ if (isset($_GET['search'])) {
                 <?php endif; ?>
             </div>
 
-                        <li>Input Validation & Sanitization</li>
+            <!-- Payload Examples & Best Practices - Developed by Amin Davodian -->
+            <div class="card">
+                <h2>💉 SQL Injection Payloads</h2>
+                <p class="alert alert-warning" style="margin-bottom: 1rem;">
+                    روی هر payload کلیک کنید تا فیلد جستجو پر شود، سپس خودتان روی <strong>Execute Query</strong> کلیک کنید.
+                </p>
+
+                <div class="payload-list">
+                    <div class="payload-item" data-payload="' OR '1'='1" onclick="setPayload(this.dataset.payload)">
+                        <div><strong>' OR '1'='1</strong></div>
+                        <div>Authentication Bypass - بازگشت تمام کاربران</div>
+                    </div>
+                    <div class="payload-item" data-payload="' UNION SELECT * FROM users --" onclick="setPayload(this.dataset.payload)">
+                        <div><strong>' UNION SELECT * FROM users --</strong></div>
+                        <div>UNION Attack - استخراج داده‌ها</div>
+                    </div>
+                    <div class="payload-item" data-payload="'; DROP TABLE users; --" onclick="setPayload(this.dataset.payload)">
+                        <div><strong>'; DROP TABLE users; --</strong></div>
+                        <div>Destructive - حذف جدول شبیه‌سازی‌شده</div>
+                    </div>
+                    <div class="payload-item" data-payload="' --" onclick="setPayload(this.dataset.payload)">
+                        <div><strong>' --</strong></div>
+                        <div>Comment Injection - قطع بقیه کوئری</div>
+                    </div>
+                </div>
+
+                <div style="margin-top: 1.5rem; padding: 1rem; background: rgba(0,0,0,0.5); border-radius: 4px;">
+                    <h3 style="color: var(--primary-color); font-size: 1rem;">🛡️ SQL Injection Defenses</h3>
+                    <ul style="margin: 0.5rem 0; padding-right: 1.5rem; color: var(--text-muted); font-size: 0.9rem;">
+                        <li>Input Validation &amp; Sanitization</li>
                         <li>Principle of Least Privilege</li>
                         <li>Use ORM frameworks</li>
-                        <li>Escape special characters</li>
+                        <li>Escape special characters (for output only)</li>
                     </ul>
                 </div>
 

@@ -23,7 +23,10 @@
 </head>
 <body>
     <div class="container">
-        <h1>1️⃣ تفاوت GET و POST</h1>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1rem;">
+            <h1>1️⃣ تفاوت GET و POST</h1>
+            <a href="reset_page.php?page=01_get_post.php" class="badge" style="background:var(--warning-color); color:#000; padding:0.5rem 1rem; text-decoration:none; border-radius:4px;">🔄 Reset All</a>
+        </div>
         
         <div class="grid">
             <!-- GET Form - Developed by Amin Davodian -->
@@ -104,10 +107,9 @@
                 window.logger.log('Interaction', `Filled GET input with: ${value}`, 'info');
             }
             
-            // Submit form after a short delay
+            // Reset background after a short delay (no auto-submit)
             setTimeout(() => {
                 input.style.backgroundColor = '';
-                document.getElementById('getForm').submit();
             }, 300);
         }
 
@@ -121,10 +123,9 @@
                 window.logger.log('Interaction', `Filled POST input with: ${value}`, 'info');
             }
             
-            // Submit form after a short delay
+            // Reset background after a short delay (no auto-submit)
             setTimeout(() => {
                 input.style.backgroundColor = '';
-                document.getElementById('postForm').submit();
             }, 300);
         }
     </script>

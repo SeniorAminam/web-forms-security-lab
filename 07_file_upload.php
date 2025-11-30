@@ -153,6 +153,9 @@ if (is_dir($uploadDir)) {
             <a href="?secure=1" class="badge" style="<?php echo $secureMode ? 'background:var(--primary-color); color:#000;' : ''; ?> padding:0.5rem 1rem; margin:0.5rem; text-decoration:none; color:white;">
                 ✅ Secure Upload
             </a>
+            <a href="reset_page.php?page=07_file_upload.php<?php echo $secureMode ? '&secure=1' : ''; ?>" class="badge" style="background:var(--warning-color); color:#000; padding:0.5rem 1rem; margin:0.5rem; text-decoration:none;">
+                🔄 Reset All
+            </a>
         </div>
 
         <?php if ($message): ?>
@@ -281,30 +284,40 @@ move_uploaded_file($_FILES['file']['tmp_name'],
         </div>
     </div>
     <script>
-        function simulateUpload(filename, type, size) {
+        // Developed by Amin Davodian - File Upload Security Handler
+        document.addEventListener('DOMContentLoaded', () => {
             const fileInput = document.getElementById('fileInput');
             
-            // Visual feedback
-            fileInput.style.borderColor = type.includes('php') ? 'var(--error-color)' : 'var(--primary-color)';
-            fileInput.style.backgroundColor = 'rgba(255,255,255,0.1)';
-            
-            setTimeout(() => {
-                fileInput.style.borderColor = '';
-                fileInput.style.backgroundColor = '';
-            }, 500);
-            
-            if(window.logger) {
-                const msg = `Selected File: ${filename} (${type}, ${size} bytes)`;
-                const logType = filename.includes('.php') ? 'warning' : 'info';
-                window.logger.log('Interaction', msg, logType);
-                
-                if(filename.includes('.php')) {
-                    window.logger.log('Security', '⚠️ Potential Webshell Detected!', 'security');
-                }
+            if (fileInput) {
+                fileInput.addEventListener('change', (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    
+                    const filename = file.name;
+                    const type = file.type;
+                    const size = file.size;
+                    
+                    // Visual feedback
+                    fileInput.style.borderColor = filename.includes('.php') ? 'var(--error-color)' : 'var(--primary-color)';
+                    fileInput.style.backgroundColor = 'rgba(255,255,255,0.1)';
+                    
+                    setTimeout(() => {
+                        fileInput.style.borderColor = '';
+                        fileInput.style.backgroundColor = '';
+                    }, 500);
+                    
+                    if(window.logger) {
+                        const msg = `Selected File: ${filename} (${type}, ${size} bytes)`;
+                        const logType = filename.includes('.php') ? 'warning' : 'info';
+                        window.logger.log('Interaction', msg, logType);
+                        
+                        if(filename.includes('.php')) {
+                            window.logger.log('Security', '⚠️ Potential Webshell Detected!', 'error');
+                        }
+                    }
+                });
             }
-            
-            alert(`Simulated Selection:\nFile: ${filename}\nType: ${type}\n\n(Note: Browser security prevents programmatically setting file inputs. Please manually select a file to test.)`);
-        }
+        });
     </script>
 </body>
 </html>

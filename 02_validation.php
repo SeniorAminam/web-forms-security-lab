@@ -59,7 +59,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 </head>
 <body>
     <div class="container">
-        <h1>2️⃣ اعتبارسنجی ورودی‌ها (Validation)</h1>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 1rem;">
+            <h1>2️⃣ اعتبارسنجی ورودی‌ها (Validation)</h1>
+            <a href="reset_page.php?page=02_validation.php" class="badge" style="background:var(--warning-color); color:#000; padding:0.5rem 1rem; text-decoration:none; border-radius:4px;">🔄 Reset All</a>
+        </div>
         
         <div class="card">
             <?php if ($success): ?>

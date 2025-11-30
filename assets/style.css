@@ -83,6 +83,11 @@ body {
     background-image:
         linear-gradient(rgba(30, 41, 59, 0.9), rgba(30, 41, 59, 0.9)),
         url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23334155' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    transition: padding-bottom 0.3s ease;
+}
+
+body.console-open {
+    padding-bottom: 280px;
 }
 
 .container {
@@ -191,6 +196,45 @@ button {
 }
 
 button:hover {
+    background-color: var(--primary-color);
+    color: #000;
+    box-shadow: 0 0 15px var(--primary-glow);
+}
+
+/* Submit button styles - Developed by Amin Davodian */
+.btn-submit-bad {
+    background-color: transparent;
+    color: var(--error-color);
+    padding: 0.75rem 1.5rem;
+    border: 1px solid var(--error-color);
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+}
+
+.btn-submit-bad:hover {
+    background-color: var(--error-color);
+    color: #fff;
+    box-shadow: 0 0 15px rgba(248, 113, 113, 0.6);
+}
+
+.btn-submit-good {
+    background-color: transparent;
+    color: var(--primary-color);
+    padding: 0.75rem 1.5rem;
+    border: 1px solid var(--primary-color);
+    border-radius: 4px;
+    font-family: var(--font-mono);
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    text-transform: uppercase;
+}
+
+.btn-submit-good:hover {
     background-color: var(--primary-color);
     color: #000;
     box-shadow: 0 0 15px var(--primary-glow);

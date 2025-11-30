@@ -164,6 +164,12 @@
 </head>
 <body>
     <div class="container">
+        <!-- Top Navigation -->
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom: 2rem;">
+            <div></div>
+            <a href="reset_page.php?page=dashboard.php" class="badge" style="background:var(--warning-color); color:#000; padding:0.5rem 1rem; text-decoration:none; border-radius:4px;">🔄 Reset All</a>
+        </div>
+
         <!-- Hero Section -->
         <div class="hero animate-fade">
             <div data-text="CYBER SECURITY LAB" class="glitch" style="font-size: 3.5rem; color: var(--primary-color); margin-bottom: 1rem;">

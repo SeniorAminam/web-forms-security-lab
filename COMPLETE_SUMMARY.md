@@ -62,17 +62,31 @@
 
 ## 🎮 فایل‌های دمو (9 فایل)
 
-| فایل | موضوع | سطح | لینک |
-|------|------|------|------|
-| 01_get_post.php | GET vs POST | Basic | [`دمو`](01_get_post.php) |
-| 02_validation.php | Validation | Basic | [`دمو`](02_validation.php) |
-| 03_xss_demo.php | XSS بازتابی | Intermediate | [`دمو`](03_xss_demo.php) |
-| 04_live_chat_xss.php | XSS ماندگار | Intermediate | [`دمو`](04_live_chat_xss.php) |
-| 05_sql_injection.php | SQL Injection | Advanced | [`دمو`](05_sql_injection.php) |
-| 06_csrf_demo.php | CSRF | Advanced | [`دمو`](06_csrf_demo.php) |
-| 07_file_upload.php | File Upload | Advanced | [`دمو`](07_file_upload.php) |
-| final/register.php | Final Project | Final | [`دمو`](final/register.php) |
-| dashboard.php | Dashboard | Navigation | [`دمو`](dashboard.php) |
+| فایل | موضوع | سطح | لینک | Reset All |
+|------|------|------|------|-----------|
+| 01_get_post.php | GET vs POST | Basic | [`دمو`](01_get_post.php) | ✅ دارد |
+| 02_validation.php | Validation | Basic | [`دمو`](02_validation.php) | ✅ دارد |
+| 03_xss_demo.php | XSS بازتابی | Intermediate | [`دمو`](03_xss_demo.php) | ✅ دارد |
+| 04_live_chat_xss.php | XSS ماندگار | Intermediate | [`دمو`](04_live_chat_xss.php) | ✅ دارد |
+| 05_sql_injection.php | SQL Injection | Advanced | [`دمو`](05_sql_injection.php) | ✅ دارد |
+| 06_csrf_demo.php | CSRF (FIXED!) | Advanced | [`دمو`](06_csrf_demo.php) | ✅ دارد |
+| 07_file_upload.php | File Upload | Advanced | [`دمو`](07_file_upload.php) | ✅ دارد |
+| final/register.php | Final Project | Final | [`دمو`](final/register.php) | - |
+| dashboard.php | Dashboard | Navigation | [`دمو`](dashboard.php) | ✅ دارد |
+
+---
+
+## 🔄 فایل‌های Reset (NEW!)
+
+| فایل | توضیح |
+|------|------|
+| `reset_page.php` | ریست محلی - داده‌های صفحه را ریست کرده و صفحه را دوباره بارگذاری می‌کند |
+| `reset_all.php` | ریست کامل - تمام داده‌ها را ریست می‌کند (برای سازگاری نگه داشته شده) |
+
+**نحوه استفاده:**
+- دکمه 🔄 **Reset All** را در هر صفحه کلیک کنید
+- فقط داده‌های آن صفحه ریست می‌شوند
+- صفحه خودکار رفرش می‌شود (بدون انتقال به صفحه دیگر)
 
 ---
 

@@ -36,6 +36,18 @@ When adding or modifying code:
 - Always escape user output with `htmlspecialchars()` in secure examples
 - Never store real credentials or secrets in the repository
 
+## Reset All Feature (NEW!)
+
+The project now includes a **Reset All** button (`reset_all.php`) that:
+- Clears all session data
+- Resets chat messages
+- Restores database to initial state
+- Removes uploaded files
+
+When adding new features that store data:
+- Update `reset_all.php` to include cleanup for your data
+- Test the reset functionality thoroughly
+
 ## Git Workflow
 
 - Create a feature branch from `main`

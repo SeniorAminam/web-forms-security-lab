@@ -71,21 +71,23 @@ If you prefer XAMPP on Windows, you can run the project like this:
 
 ```
 Tsw/
-├── dashboard.php            # 🎯 Main navigation hub
-├── slides.html             # 🎬 Presentation slides
-├── 01_get_post.php        # GET vs POST demo
-├── 02_validation.php      # Input validation
-├── 03_xss_demo.php        # XSS basics
-├── 04_live_chat_xss.php   # Persistent XSS
-├── 05_sql_injection.php   # SQL injection lab (NEW!)
-├── 06_csrf_demo.php       # CSRF attack demo (NEW!)
-├── 07_file_upload.php     # File upload vuln (NEW!)
+├── dashboard.php            # 🎯 Main navigation hub (with Reset All button)
+├── slides.html             # 🎬 Presentation slides (with Reset All button)
+├── reset_page.php          # 🔄 Scoped reset handler (resets & reloads page) (NEW!)
+├── reset_all.php           # 🔄 Global reset (legacy, kept for compatibility)
+├── 01_get_post.php        # GET vs POST demo (with Reset All button)
+├── 02_validation.php      # Input validation (with Reset All button)
+├── 03_xss_demo.php        # XSS basics (with Reset All button)
+├── 04_live_chat_xss.php   # Persistent XSS (with Reset All button)
+├── 05_sql_injection.php   # SQL injection lab (with Reset All button)
+├── 06_csrf_demo.php       # CSRF attack demo (FIXED! Balance protection in Secure mode)
+├── 07_file_upload.php     # File upload vuln (with Reset All button)
 ├── assets/
 │   ├── style.css          # Cyberpunk theme
-│   ├── animations.css     # Advanced animations (NEW!)
+│   ├── animations.css     # Advanced animations
 │   ├── interceptor.js     # Request interceptor
 │   ├── console-logger.js  # Console logger helper
-│   └── terminal.js        # Interactive terminal (NEW!)
+│   └── terminal.js        # Interactive terminal
 ├── final/
 │   ├── register.php       # Secure registration form
 │   └── profile.php        # User profile page
@@ -100,15 +102,17 @@ Tsw/
 
 | Path | Description (EN) | توضیح کوتاه (فارسی) |
 | --- | --- | --- |
-| `dashboard.php` | Main dashboard to launch all security labs and demos. | داشبورد اصلی برای دسترسی به همه‌ی سناریوها و دموها. |
-| `slides.html` | Full-screen HTML slides (Matrix-style) used during the talk. | اسلایدهای HTML برای استفاده در کلاس و ویدئوپروژکتور. |
-| `01_get_post.php` | Demonstrates the difference between GET and POST, with simple request logging. | دمو تفاوت GET و POST و نمایش داده‌ها در URL و بدنه درخواست. |
-| `02_validation.php` | Server-side input validation lab with success/error messages. | آزمایش اعتبارسنجی ورودی‌ها در سمت سرور با مثال‌های معتبر و نامعتبر. |
-| `03_xss_demo.php` | Basic reflected XSS demo (vulnerable vs secure). | دمو ساده XSS بازتابی؛ نسخه ناامن در برابر نسخه امن با `htmlspecialchars()`. |
-| `04_live_chat_xss.php` | Simulated live chat showing persistent XSS. | چت شبیه‌سازی‌شده برای نمایش XSS ماندگار (ذخیره‌شده در دیتابیس/فایل). |
-| `05_sql_injection.php` | SQL injection lab with vulnerable and secure query examples. | سناریوی SQL Injection با نمایش کوئری ناامن و نسخه‌ی امن (Prepared Statement). |
-| `06_csrf_demo.php` | CSRF attack demo with vulnerable and token-protected flows. | دمو CSRF با نسخه‌ی بدون توکن و نسخه‌ی دارای CSRF Token. |
-| `07_file_upload.php` | File upload vulnerability lab with webshell example. | آزمایش آپلود فایل و خطر Webshell، به‌همراه نسخه‌ی امن با محدودیت نوع فایل. |
+| `dashboard.php` | Main dashboard to launch all security labs and demos. Has Reset All button. | داشبورد اصلی برای دسترسی به همه‌ی سناریوها و دموها. دارای دکمه Reset All. |
+| `slides.html` | Full-screen HTML slides (Matrix-style) used during the talk. Has Reset All button. | اسلایدهای HTML برای استفاده در کلاس و ویدئوپروژکتور. دارای دکمه Reset All. |
+| `reset_all.php` | Resets all session data, chat messages, database, and uploaded files. | ریست کردن تمام داده‌های session، پیام‌های چت، دیتابیس و فایل‌های آپلود شده. |
+| `01_get_post.php` | Demonstrates the difference between GET and POST, with simple request logging. Has Reset All button. | دمو تفاوت GET و POST و نمایش داده‌ها در URL و بدنه درخواست. دارای دکمه Reset All. |
+| `02_validation.php` | Server-side input validation lab with success/error messages. Has Reset All button. | آزمایش اعتبارسنجی ورودی‌ها در سمت سرور با مثال‌های معتبر و نامعتبر. دارای دکمه Reset All. |
+| `03_xss_demo.php` | Basic reflected XSS demo (vulnerable vs secure). Has Reset All button. | دمو ساده XSS بازتابی؛ نسخه ناامن در برابر نسخه امن با `htmlspecialchars()`. دارای دکمه Reset All. |
+| `04_live_chat_xss.php` | Simulated live chat showing persistent XSS. Has Reset All button. | چت شبیه‌سازی‌شده برای نمایش XSS ماندگار (ذخیره‌شده در دیتابیس/فایل). دارای دکمه Reset All. |
+| `05_sql_injection.php` | SQL injection lab with vulnerable and secure query examples. Has Reset All button. | سناریوی SQL Injection با نمایش کوئری ناامن و نسخه‌ی امن (Prepared Statement). دارای دکمه Reset All. |
+| `06_csrf_demo.php` | CSRF attack demo with vulnerable and token-protected flows. Balance ONLY changes in Vulnerable mode. Has Reset All button. | دمو CSRF با نسخه‌ی بدون توکن و نسخه‌ی دارای CSRF Token. موجودی فقط در حالت Vulnerable تغییر می‌کند. دارای دکمه Reset All. |
+| `reset_page.php` | Scoped reset handler - resets specific page data and reloads the same page. | ریست محلی - داده‌های هر صفحه را ریست کرده و صفحه را دوباره بارگذاری می‌کند. |
+| `07_file_upload.php` | File upload vulnerability lab with webshell example. Has Reset All button. | آزمایش آپلود فایل و خطر Webshell، به‌همراه نسخه‌ی امن با محدودیت نوع فایل. دارای دکمه Reset All. |
 | `assets/style.css` | Main stylesheet with the cyberpunk/hacker theme. | استایل اصلی رابط کاربری با تم Cyberpunk / Hacker. |
 | `assets/animations.css` | Extra animations (glitch, neon, transitions). | انیمیشن‌های اضافی برای افکت‌های تصویری و ترنزیشن‌ها. |
 | `assets/interceptor.js` | JavaScript interceptor for visualizing outgoing requests. | اسکریپتی برای رهگیری و نمایش درخواست‌ها (برای دمو GET/POST و غیره). |

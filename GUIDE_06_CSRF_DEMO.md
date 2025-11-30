@@ -155,7 +155,7 @@ if ($amount > 0 && $amount <= $_SESSION['balance']) {
 
 ---
 
-### بخش 5: Secure Mode
+### بخش 5: Secure Mode (FIXED!)
 
 ```php
 if ($secureMode) {
@@ -164,12 +164,15 @@ if ($secureMode) {
     
     if (!hash_equals($_SESSION['csrf_token'], $providedToken)) {
         $message = '❌ CSRF token validation failed! Transfer blocked.';
-    } elseif ($amount > 0 && $amount <= $_SESSION['balance']) {
-        $_SESSION['balance'] -= $amount;
-        $transferSuccess = true;
-        $message = "✅ Successfully transferred $" . number_format($amount, 2) . " to " . htmlspecialchars($recipient);
     } else {
-        $message = '❌ Invalid amount or insufficient balance.';
+        // Only process transfer if in secure mode
+        if ($secureMode) {
+            $_SESSION['balance'] -= $amount;
+            $transferSuccess = true;
+            $message = "✅ Successfully transferred $" . number_format($amount, 2) . " to " . htmlspecialchars($recipient);
+        } else {
+            $message = '❌ Transfer blocked! You must be in Secure Mode to use this form.';
+        }
     }
 }
 ```
@@ -191,14 +194,29 @@ if (!hash_equals($_SESSION['csrf_token'], $providedToken)) {
 
 **نکته:** `hash_equals()` برای جلوگیری از timing attacks استفاده می‌شود
 
-#### ج) انتقال موفق
+#### ج) بررسی حالت Secure (FIXED!)
 ```php
-elseif ($amount > 0 && $amount <= $_SESSION['balance']) {
-    $_SESSION['balance'] -= $amount;
-    $transferSuccess = true;
+if (!$secureMode) {
+    // Block if not in secure mode
+    $message = '❌ Transfer blocked! You must be in Secure Mode to use this form.';
+} else {
+    $providedToken = $_POST['csrf_token'] ?? '';
+    
+    if (!hash_equals($_SESSION['csrf_token'], $providedToken)) {
+        $message = '❌ CSRF token validation failed! Transfer blocked.';
+    } else {
+        // Only process transfer if BOTH token is valid AND in secure mode
+        $_SESSION['balance'] -= $amount;
+        $transferSuccess = true;
+        $message = "✅ Successfully transferred $" . number_format($amount, 2) . " to " . htmlspecialchars($recipient);
+    }
 }
 ```
-- اگر توکن معتبر بود، انتقال انجام می‌شود
+
+**اهمیت:** موجودی فقط در حالت Secure تغییر می‌کند!
+- اگر در حالت Vulnerable باشید، فرم Secure کار نمی‌کند
+- حتی اگر CSRF token معتبر باشد، اگر در Vulnerable mode باشید، انتقال انجام نمی‌شود
+- این جلوگیری می‌کند از اینکه موجودی بدون اطلاع تغییر کند
 
 ---
 

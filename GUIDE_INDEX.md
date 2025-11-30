@@ -91,6 +91,7 @@
 - ✅ فرم‌های مخفی
 - ✅ CSRF Token برای دفاع
 - ✅ Session و Balance Management
+- ✅ **NEW!** موجودی محافظت شده در حالت Secure
 
 **مدت زمان:** 25-30 دقیقه
 
