@@ -194,29 +194,37 @@ if (!hash_equals($_SESSION['csrf_token'], $providedToken)) {
 
 **نکته:** `hash_equals()` برای جلوگیری از timing attacks استفاده می‌شود
 
-#### ج) بررسی حالت Secure (FIXED!)
+#### ج) بررسی حالت Secure و Action (FIXED!)
 ```php
+$action = $_POST['action'] ?? 'send'; // 'send' or 'receive'
+
 if (!$secureMode) {
     // Block if not in secure mode
-    $message = '❌ Transfer blocked! You must be in Secure Mode to use this form.';
+    $message = '❌ Secure form blocked! You must be in Secure Mode.';
 } else {
     $providedToken = $_POST['csrf_token'] ?? '';
     
     if (!hash_equals($_SESSION['csrf_token'], $providedToken)) {
         $message = '❌ CSRF token validation failed! Transfer blocked.';
     } else {
-        // Only process transfer if BOTH token is valid AND in secure mode
-        $_SESSION['balance'] -= $amount;
+        // Process transfer based on action
+        if ($action === 'send') {
+            $_SESSION['balance'] -= $amount;
+            $message = "✅ Successfully sent $" . number_format($amount, 2) . " to " . htmlspecialchars($recipient);
+        } else { // receive
+            $_SESSION['balance'] += $amount;
+            $message = "✅ Successfully received $" . number_format($amount, 2) . " from " . htmlspecialchars($recipient);
+        }
         $transferSuccess = true;
-        $message = "✅ Successfully transferred $" . number_format($amount, 2) . " to " . htmlspecialchars($recipient);
     }
 }
 ```
 
-**اهمیت:** موجودی فقط در حالت Secure تغییر می‌کند!
-- اگر در حالت Vulnerable باشید، فرم Secure کار نمی‌کند
-- حتی اگر CSRF token معتبر باشد، اگر در Vulnerable mode باشید، انتقال انجام نمی‌شود
-- این جلوگیری می‌کند از اینکه موجودی بدون اطلاع تغییر کند
+**اهمیت:**
+- ✅ فرم Secure فقط در Secure Mode کار می‌کند
+- ✅ موجودی می‌تواند **افزایش** (receive) یا **کاهش** (send) پیدا کند
+- ✅ هر دو عملیات نیاز به CSRF token معتبر دارند
+- ✅ فرم Vulnerable بدون توکن کار می‌کند (فقط در Vulnerable Mode)
 
 ---
 
@@ -528,9 +536,12 @@ $10,000.00
 
 ## 📝 خلاصه
 
-**`06_csrf_demo.php`** یک دمو تعاملی است که:
-- ✅ حمله CSRF را نشان می‌دهد
-- ✅ Session و Balance را استفاده می‌کند
+فایل `06_csrf_demo.php` یک دمو تعاملی از حملات CSRF است که:
+- **نسخه‌ی ناامن (Vulnerable):** بدون CSRF token، Send/Receive کار می‌کند
+- **نسخه‌ی امن (Secure):** با CSRF token، Send/Receive کار می‌کند
+- **Pre-built Payloads:** 4 دکمه برای تست فوری (بدون ورودی دستی)
+- **توضیحات کامل** درباره‌ی حمله و دفاع
+- **⭐ NEW:** موجودی می‌تواند افزایش (Receive) یا کاهش (Send) پیدا کند
 - ✅ CSRF Token validation را نشان می‌دهد
 - ✅ روش‌های دفاع را توضیح می‌دهد
 

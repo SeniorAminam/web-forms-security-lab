@@ -31,6 +31,7 @@ $secureMode = isset($_GET['secure']) && $_GET['secure'] == 1;
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['transfer'])) {
     $amount = floatval($_POST['amount'] ?? 0);
     $recipient = trim($_POST['recipient'] ?? '');
+    $action = $_POST['action'] ?? 'send'; // 'send' or 'receive'
     
     // Determine which form was submitted
     $isSecureForm = isset($_POST['csrf_token']);
@@ -40,33 +41,44 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['transfer'])) {
         $message = '❌ Recipient name is required!';
     } elseif ($amount <= 0) {
         $message = '❌ Amount must be greater than zero!';
-    } elseif ($amount > $_SESSION['balance']) {
+    } elseif ($action === 'send' && $amount > $_SESSION['balance']) {
         $message = '❌ Insufficient balance!';
     } elseif ($isSecureForm) {
         // SECURE VERSION - Check CSRF token AND mode
         if (!$secureMode) {
-            // Block if not in secure mode
-            $message = '❌ Transfer blocked! You must be in Secure Mode to use this form.';
+            // Block if not in secure mode - form should not be submitted
+            $message = '❌ Secure form blocked! You must be in Secure Mode.';
         } else {
             $providedToken = $_POST['csrf_token'] ?? '';
             
             if (!hash_equals($_SESSION['csrf_token'], $providedToken)) {
                 $message = '❌ CSRF token validation failed! Transfer blocked.';
             } else {
-                // Only process transfer if BOTH token is valid AND in secure mode
-                $_SESSION['balance'] -= $amount;
+                // Process transfer based on action
+                if ($action === 'send') {
+                    $_SESSION['balance'] -= $amount;
+                    $message = "✅ Successfully sent $" . number_format($amount, 2) . " to " . htmlspecialchars($recipient);
+                } else { // receive
+                    $_SESSION['balance'] += $amount;
+                    $message = "✅ Successfully received $" . number_format($amount, 2) . " from " . htmlspecialchars($recipient);
+                }
                 $transferSuccess = true;
-                $message = "✅ Successfully transferred $" . number_format($amount, 2) . " to " . htmlspecialchars($recipient);
             }
         }
     } else {
         // VULNERABLE VERSION - No CSRF protection (only in vulnerable mode)
         if (!$secureMode) {
-            $_SESSION['balance'] -= $amount;
+            // Process transfer based on action
+            if ($action === 'send') {
+                $_SESSION['balance'] -= $amount;
+                $message = "✅ Sent $" . number_format($amount, 2) . " to " . htmlspecialchars($recipient);
+            } else { // receive
+                $_SESSION['balance'] += $amount;
+                $message = "✅ Received $" . number_format($amount, 2) . " from " . htmlspecialchars($recipient);
+            }
             $transferSuccess = true;
-            $message = "✅ Transferred $" . number_format($amount, 2) . " to " . htmlspecialchars($recipient);
         } else {
-            $message = '❌ Transfer blocked in secure mode!';
+            $message = '❌ Vulnerable form blocked! You must be in Vulnerable Mode.';
         }
     }
 }
@@ -195,93 +207,53 @@ if (isset($_GET['reset'])) {
             </div>
         <?php endif; ?>
 
-        <div class="transfer-form-container">
-            <!-- Vulnerable Transfer Form -->
-            <div class="transfer-card vulnerable">
-                <h3 style="color: var(--error-color);">❌ Vulnerable Bank</h3>
-                <p style="font-size: 0.9rem; color: var(--text-muted);">بدون حفاظت CSRF</p>
-                
-                <form action="" method="POST" id="vulnerableForm" <?php echo $secureMode ? 'style="opacity:0.5; pointer-events:none;"' : ''; ?>>
-                    <div class="form-group">
-                        <label for="vulnRecipient">مقصد:</label>
-                        <input type="text" name="recipient" id="vulnRecipient" placeholder="نام حساب" required <?php echo $secureMode ? 'disabled' : ''; ?>>
-                    </div>
-                    <div class="form-group">
-                        <label for="vulnAmount">مبلغ ($):</label>
-                        <input type="number" name="amount" id="vulnAmount" placeholder="0.00" step="0.01" min="0" required <?php echo $secureMode ? 'disabled' : ''; ?>>
-                    </div>
-                    <input type="hidden" name="transfer" value="1">
-                    <button type="submit" style="background: var(--error-color); border-color: var(--error-color);" <?php echo $secureMode ? 'disabled' : ''; ?>>
-                        ارسال (بدون حفاظت)
-                    </button>
-                </form>
-                
-                <?php if ($secureMode): ?>
-                    <div style="margin-top: 1rem; padding: 1rem; background: rgba(16, 185, 129, 0.2); border-radius: 4px; border: 1px solid var(--primary-color);">
-                        <strong style="color: var(--primary-color);">✅ Disabled in Secure Mode</strong>
-                        <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem;">این فرم در حالت امن غیرفعال است.</p>
-                    </div>
-                <?php endif; ?>
-
-                <div style="margin-top: 1rem; padding: 1rem; background: rgba(0,0,0,0.3); border-radius: 4px; font-size: 0.85rem;">
-                    <strong style="color: var(--error-color);">⚠️ مشکل:</strong>
-                    <p style="margin: 0.5rem 0 0 0;">هیچ CSRF token وجود ندارد. حمله‌گر می‌تواند فرم را جعل کند.</p>
-                </div>
-            </div>
-
-            <!-- Secure Transfer Form -->
-            <div class="transfer-card secure">
-                <h3 style="color: var(--primary-color);">✅ Secure Bank</h3>
-                <p style="font-size: 0.9rem; color: var(--text-muted);">با حفاظت CSRF Token</p>
-                
-                <form action="" method="POST" id="secureForm" <?php echo !$secureMode ? 'style="opacity:0.5; pointer-events:none;"' : ''; ?>>
-                    <div class="form-group">
-                        <label for="secRecipient">مقصد:</label>
-                        <input type="text" name="recipient" id="secRecipient" placeholder="نام حساب" required <?php echo !$secureMode ? 'disabled' : ''; ?>>
-                    </div>
-                    <div class="form-group">
-                        <label for="secAmount">مبلغ ($):</label>
-                        <input type="number" name="amount" id="secAmount" placeholder="0.00" step="0.01" min="0" required <?php echo !$secureMode ? 'disabled' : ''; ?>>
-                    </div>
-                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
-                    <input type="hidden" name="transfer" value="1">
-                    <button type="submit" style="background: var(--primary-color); border-color: var(--primary-color); color: #000;" <?php echo !$secureMode ? 'disabled' : ''; ?>>
-                        ارسال (محافظت شده)
-                    </button>
-                </form>
-                
-                <?php if (!$secureMode): ?>
-                    <div style="margin-top: 1rem; padding: 1rem; background: rgba(239, 68, 68, 0.2); border-radius: 4px; border: 1px solid var(--error-color);">
-                        <strong style="color: var(--error-color);">❌ Disabled in Vulnerable Mode</strong>
-                        <p style="margin: 0.5rem 0 0 0; font-size: 0.9rem;">برای دیدن حالت امن، روی دکمه "✅ Secure Bank" کلیک کنید.</p>
-                    </div>
-                <?php endif; ?>
-
-                <div style="margin-top: 1rem; padding: 1rem; background: rgba(0,0,0,0.3); border-radius: 4px; font-size: 0.85rem;">
-                    <strong style="color: var(--primary-color);">✅ حفاظت:</strong>
-                    <p style="margin: 0.5rem 0 0 0;">CSRF token تصادفی در هر درخواست بررسی می‌شود.</p>
-                </div>
-            </div>
-        </div>
-
         <!-- Quick Actions -->
         <div class="card" style="margin-top: 2rem; border-top: 4px solid var(--warning-color);">
-            <h2 style="color: var(--warning-color);">⚡ Quick Actions</h2>
-            <p>پیام‌های آماده برای تست:</p>
+            <h2 style="color: var(--warning-color);">⚡ Quick Actions - Pre-built Payloads</h2>
+            <p>کلیک کنید تا تراکنش‌های آماده اجرا شوند:</p>
             
             <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-top: 1rem;">
-                <button onclick="fillVulnerableTransfer('Attacker', 1000)" class="badge" style="background: var(--error-color); color: white; padding: 0.75rem; cursor: pointer; border: none; border-radius: 4px;">
-                    💰 Transfer $1,000
-                </button>
-                <button onclick="fillVulnerableTransfer('Hacker_Account', 5000)" class="badge" style="background: var(--error-color); color: white; padding: 0.75rem; cursor: pointer; border: none; border-radius: 4px;">
-                    💀 Transfer $5,000
-                </button>
-                <button onclick="fillSecureTransfer('Friend', 500)" class="badge" style="background: var(--primary-color); color: #000; padding: 0.75rem; cursor: pointer; border: none; border-radius: 4px;">
-                    ✅ Transfer $500 (Secure)
-                </button>
-                <button onclick="fillSecureTransfer('Charity', 2000)" class="badge" style="background: var(--primary-color); color: #000; padding: 0.75rem; cursor: pointer; border: none; border-radius: 4px;">
-                    ✅ Transfer $2,000 (Secure)
-                </button>
+                <form method="POST" style="display: contents;">
+                    <input type="hidden" name="recipient" value="Attacker">
+                    <input type="hidden" name="amount" value="1000">
+                    <input type="hidden" name="action" value="send">
+                    <input type="hidden" name="transfer" value="1">
+                    <button type="submit" class="badge" style="background: var(--error-color); color: white; padding: 0.75rem; cursor: pointer; border: none; border-radius: 4px;">
+                        💸 Send $1,000 (Vuln)
+                    </button>
+                </form>
+                
+                <form method="POST" style="display: contents;">
+                    <input type="hidden" name="recipient" value="Friend">
+                    <input type="hidden" name="amount" value="2000">
+                    <input type="hidden" name="action" value="receive">
+                    <input type="hidden" name="transfer" value="1">
+                    <button type="submit" class="badge" style="background: var(--error-color); color: white; padding: 0.75rem; cursor: pointer; border: none; border-radius: 4px;">
+                        💰 Receive $2,000 (Vuln)
+                    </button>
+                </form>
+                
+                <form method="POST" style="display: contents;">
+                    <input type="hidden" name="recipient" value="Charity">
+                    <input type="hidden" name="amount" value="500">
+                    <input type="hidden" name="action" value="send">
+                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
+                    <input type="hidden" name="transfer" value="1">
+                    <button type="submit" class="badge" style="background: var(--primary-color); color: #000; padding: 0.75rem; cursor: pointer; border: none; border-radius: 4px;">
+                        💸 Send $500 (Secure)
+                    </button>
+                </form>
+                
+                <form method="POST" style="display: contents;">
+                    <input type="hidden" name="recipient" value="Donor">
+                    <input type="hidden" name="amount" value="3000">
+                    <input type="hidden" name="action" value="receive">
+                    <input type="hidden" name="csrf_token" value="<?php echo htmlspecialchars($_SESSION['csrf_token']); ?>">
+                    <input type="hidden" name="transfer" value="1">
+                    <button type="submit" class="badge" style="background: var(--primary-color); color: #000; padding: 0.75rem; cursor: pointer; border: none; border-radius: 4px;">
+                        💰 Receive $3,000 (Secure)
+                    </button>
+                </form>
             </div>
         </div>
 
@@ -361,46 +333,7 @@ if (!hash_equals($_SESSION['csrf_token'],
     </div>
 
     <script>
-        // Fill vulnerable form - Developed by Amin Davodian
-        function fillVulnerableTransfer(recipient, amount) {
-            const recipientInput = document.getElementById('vulnRecipient');
-            const amountInput = document.getElementById('vulnAmount');
-            
-            if (recipientInput && amountInput) {
-                recipientInput.value = recipient;
-                amountInput.value = amount;
-                
-                [recipientInput, amountInput].forEach(input => {
-                    input.style.backgroundColor = '#fffbeb';
-                    setTimeout(() => input.style.backgroundColor = '', 500);
-                });
-                
-                if(window.logger) {
-                    window.logger.log('Interaction', `Filled Vulnerable Transfer: To=${recipient}, Amount=${amount}`, 'warning');
-                }
-            }
-        }
-
-        // Fill secure form
-        function fillSecureTransfer(recipient, amount) {
-            const recipientInput = document.getElementById('secRecipient');
-            const amountInput = document.getElementById('secAmount');
-            
-            if (recipientInput && amountInput) {
-                recipientInput.value = recipient;
-                amountInput.value = amount;
-                
-                [recipientInput, amountInput].forEach(input => {
-                    input.style.backgroundColor = '#fffbeb';
-                    setTimeout(() => input.style.backgroundColor = '', 500);
-                });
-                
-                if(window.logger) {
-                    window.logger.log('Interaction', `Filled Secure Transfer: To=${recipient}, Amount=${amount}`, 'success');
-                }
-            }
-        }
-
+        // Execute CSRF Attack - Developed by Amin Davodian
         function executeCSRF() {
             if (<?php echo $secureMode ? 'true' : 'false'; ?>) {
                 alert('🛡️ Attack Blocked!\n\nThe secure mode has CSRF token validation.\nThe attack cannot succeed without a valid token.');

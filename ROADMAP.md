@@ -35,8 +35,29 @@ http://localhost:8000/dashboard.php
 صفحه‌ای با 9 کارت رنگی ظاهر می‌شود. هر کارت یک دمو است.
 
 **4. دکمه Reset All را ببینید (NEW!):**
-- هر صفحه دارای دکمه 🔄 **Reset All** است
-- برای ریست کردن تمام داده‌ها استفاده کنید
+- هر صفحه دارای دکمه## 🔄 Step 9: Reset Features (NEW!)
+
+### 9.1 Global Reset (`reset_all.php`)
+**فایل:** `reset_all.php` (1.4 KB, ~50 خط)
+
+- ✅ ریست کردن تمام session data
+- ✅ ریست کردن chat messages
+- ✅ ریست کردن database
+- ✅ ریست کردن uploaded files
+- ✅ ریدایرکت به slides.html
+
+### 9.2 Scoped Reset (`reset_page.php`) ⭐ NEW!
+**فایل:** `reset_page.php` (3.0 KB, ~75 خط)
+
+- ✅ ریست محلی (فقط صفحه‌ی جاری)
+- ✅ محفوظ نگاه‌داشتن حالت Vulnerable/Secure
+- ✅ ریدایرکت به همان صفحه
+- ✅ بهتر برای تست
+
+**مرتبط فایل‌ها:**
+- `reset_all.php` (1.4 KB)
+- `reset_page.php` (3.0 KB) ⭐ توصیه شده
+- تمام فایل‌های demo (Reset All button)
 
 ### 📖 فایل‌های مرتبط:
 - `README.md` - معرفی پروژه
